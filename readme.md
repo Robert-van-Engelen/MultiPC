@@ -1,11 +1,9 @@
-# MultiPC: a multi-program switcher for SHARP pocket computers
+# MultiPC: a multi-program manager for SHARP pocket computers
 
-Author: Dr. Robert van Engelen, 2021
-
-This powerful but small machine code program allows you to switch between ten
-BASIC programs residing simultaneously in memory on your SHARP pocket computer.
-Each of the ten BASIC programs can be independently run, edited, `CLOAD`ed from
-tape, `CSAVE`d, `MERGE`d and `CHAIN`ed.
+This powerful but small machine code program manages up to ten BASIC programs
+residing simultaneously in memory on your SHARP pocket computer.  Each of the
+ten BASIC programs can be independently run, edited, `CLOAD`ed from tape,
+`CSAVE`d, `MERGE`d and `CHAIN`ed.
 
 Benefits:
 
