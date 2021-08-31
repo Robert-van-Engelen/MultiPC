@@ -101,11 +101,11 @@ the PC-1350 with 16KB card:
     .include "pc1350.h"
 
 To assemble the code, you need the AS61860 assembler and linker, see:
-<https://www.qsl.net/yt2fsg/pocket/pocket_asm.html>
-<http://shop-pdp.net/ashtml/asxxxx.php>
+- <https://www.qsl.net/yt2fsg/pocket/pocket_asm.html>
+- <http://shop-pdp.net/ashtml/asxxxx.php>
 
 The ihx2bas tool included with this project converts IHX format to a BASIC
 bootloader program.
 
 The `pc1350.h` file is sourced and extended from the PShell project:
-<https://edgar-pue.tripod.com/sharp/pshell.html>
+- <https://edgar-pue.tripod.com/sharp/pshell.html>
