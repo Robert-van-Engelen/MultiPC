@@ -1,5 +1,7 @@
 # MultiPC: a multi-program manager for SHARP pocket computers
 
+![PC-E500S](PC-1350.jpeg)
+
 This small but powerful machine code program manages up to ten BASIC programs
 residing simultaneously in memory on your SHARP pocket computer.  Each of the
 ten BASIC programs can be independently run, edited, `CLOAD`ed from tape,
