@@ -101,8 +101,8 @@ address, in RESERVE MODE define the S (switch) key:
 
 ## Converting BAS to WAV files
 
-The excellent [PocketTools](https://www.peil-partner.de/ifhe.de/sharp/) should
-be used to convert BASIC source code to wav files to load with `CLOAD`:
+I used the excellent [PocketTools](https://www.peil-partner.de/ifhe.de/sharp/)
+to convert BASIC source code to wav files:
 
     bas2img --pc=1350 --level=8 switch16.bas
     bin2wav --pc=1350 switch16.img
