@@ -1,6 +1,6 @@
 # MultiPC: a multi-program manager for SHARP pocket computers
 
-This powerful but small machine code program manages up to ten BASIC programs
+This small but powerful machine code program manages up to ten BASIC programs
 residing simultaneously in memory on your SHARP pocket computer.  Each of the
 ten BASIC programs can be independently run, edited, `CLOAD`ed from tape,
 `CSAVE`d, `MERGE`d and `CHAIN`ed.
@@ -17,15 +17,22 @@ Do not:
 - switch programs from within a running program
 - use `TEXT`, unless you go back to `BASIC` before switching programs
 
-The following instructions use a cassette interface (CE-126P or CE-124).
-If you do not have a cassette interface, then type over the BASIC installer
-code and `RUN` (instead of DEF-A) to verify it and install.
+Recommended:
+
+- press CA (SHIFT CLS) after switching programs, because UP/DOWN keys to jump
+  to the currently executing line of BASIC will not work and may hang.  If that
+  happens, hold a key and RESET at the same time to recover.
+
+The following instructions use a cassette interface (CE-126P or CE-124).  If
+you do not have a cassette interface, then type over the BASIC installer code
+and `RUN` (instead of DEF-A) to verify it and install.
 
 ## SHARP PC-1350 with 16KB RAM card
 
 Installation:
 
-Play the multi16.wav file and `CLOAD` then press DEF-A to install
+Play the multi16.wav file and `CLOAD` then press DEF-A to install.  This shows:
+`*123456789` with 10 program slots available and the current slot is `0`.
 
 Usage:
 
@@ -35,7 +42,9 @@ slots and `_` for used slots.  The current program slot switched to is `*`.
 `CALL 8240,0` switch to program 0, `CALL 8240,1` switch to program 1, and so on
 up to program 9.
 
-`CALL 8240,NEW` deletes all 10 programs.
+To clear a program slot just make it the current slot and enter `NEW`.
+
+`CALL 8240,NEW` clears all 10 programs.
 
 To make this easier and avoid costly mistakes when entering the calling
 address, in RESERVE MODE define the S (switch) key:
@@ -46,7 +55,8 @@ address, in RESERVE MODE define the S (switch) key:
 
 Installation:
 
-Play the multi8.wav file and `CLOAD` then press DEF-A to install
+Play the multi8.wav file and `CLOAD` then press DEF-A to install.  This shows:
+`*123456789` with 10 program slots available and the current slot is `0`.
 
 Usage:
 
@@ -56,7 +66,9 @@ slots and `_` for used slots.  The current program slot switched to is `*`.
 `CALL 16432,0` switch to program 0, `CALL 16432,1` switch to program 1, and so
 on up to program 9.
 
-`CALL 16432,NEW` deletes all 10 programs.
+To clear a program slot just make it the current slot and enter `NEW`.
+
+`CALL 16432,NEW` clears all 10 programs.
 
 To make this easier and avoid costly mistakes when entering the calling
 address, in RESERVE MODE define the S (switch) key:
@@ -67,7 +79,8 @@ address, in RESERVE MODE define the S (switch) key:
 
 Installation:
 
-Play the multi0.wav file and `CLOAD` then press DEF-A to install
+Play the multi0.wav file and `CLOAD` then press DEF-A to install.  This shows:
+`*123456789` with 10 program slots available and the current slot is `0`.
 
 Usage:
 
@@ -77,7 +90,9 @@ slots and `_` for used slots.  The current program slot switched to is `*`.
 `CALL 24624,0` switch to program 0, `CALL 24624,1` switch to program 1, and so
 on up to program 9.
 
-`CALL 24624,NEW` deletes all 10 programs.
+To clear a program slot just make it the current slot and enter `NEW`.
+
+`CALL 24624,NEW` clears all 10 programs.
 
 To make this easier and avoid costly mistakes when entering the calling
 address, in RESERVE MODE define the S (switch) key:
