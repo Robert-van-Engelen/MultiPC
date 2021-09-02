@@ -1,6 +1,6 @@
 # MultiPC: a multi-program manager for SHARP pocket computers
 
-![PC-E500S](PC-1350.jpeg)
+![PC-1350](PC-1350.jpeg)
 
 This small but powerful machine code program manages up to ten BASIC programs
 residing simultaneously in memory on your SHARP pocket computer.  Each of the
@@ -16,14 +16,15 @@ Benefits:
 
 Do not:
 
-- switch programs from within a running program
+- switch programs from _within_ a running program
 - use `TEXT`, unless you go back to `BASIC` before switching programs
 
 Recommended:
 
-- press CA (SHIFT CLS) after switching programs, because UP/DOWN keys to jump
-  to the currently executing line of BASIC will not work and may hang.  If that
-  happens, hold a key and RESET at the same time to recover.
+- press CA (SHIFT CLS) after switching programs to clear program execution
+  tracing, because UP/DOWN keys to show the currently executing line of BASIC
+  will not work and may hang.  If that ever happens, hold a key and RESET at
+  the same time to recover.
 
 The following instructions use a cassette interface (CE-126P or CE-124).  If
 you do not have a cassette interface, then type over the BASIC installer code
