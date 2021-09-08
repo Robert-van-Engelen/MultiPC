@@ -1,7 +1,7 @@
 ; -----------------------------------------------
 ; PShell - a runtime environment for    
 ; sharp pocket computers                 
-; file     : pc1350.h                   
+; file     : pc1350.asm                  
 ; author   : puehringer edgar           
 ; date     : 29.02.2004                 
 ; version  : 1.0.0                      

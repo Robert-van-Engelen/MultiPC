@@ -15,7 +15,7 @@ RM=rm -f
 LDR=multipc.bas
 HEX=multipc.ihx
 OBJ=multipc.rel
-TRG=pc1350.h
+TRG=pc1350.asm
 
 # rules
 
@@ -29,7 +29,7 @@ $(LDR): $(HEX)
 $(HEX): $(OBJ)
 	$(LNK) $(LNKFLAGS) $(HEX) $(OBJ)
 
-%.rel: %.asm $(TRG) target.h regs.h
+%.rel: %.asm $(TRG) target.asm regs.asm
 	$(ASM) $(ASMFLAGS) $<
 
 clean:

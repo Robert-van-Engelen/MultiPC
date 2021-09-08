@@ -17,22 +17,22 @@ __RAM_SLOT1__ =  16
 ; -----------------------------------------------
 
 ; Uncomment this if your machine is a PC-1262
-; .include "pc1262.h"
+; .include "pc1262.asm"
 
 ; Uncomment this if your machine is a PC-1280
-; .include "pc1280.h"
+; .include "pc1280.asm"
 
 ; Uncomment this if your machine is a PC-1350
-.include "pc1350.h"
+.include "pc1350.asm"
 
 ; Uncomment this if your machine is a PC-1360
-; .include "pc1360.h"
+; .include "pc1360.asm"
 
 ; Uncomment this if your machine is a PC-1402
-; .include "pc1402.h"
+; .include "pc1402.asm"
 
 ; Uncomment this if your machine is a PC-1403(H)
-; .include "pc1403.h"
+; .include "pc1403.asm"
 
 
 ; -----------------------------------------------

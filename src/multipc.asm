@@ -17,8 +17,8 @@
 
 .area	PROGRAM (REL)
 
-.include "target.h"
-.include "regs.h"
+.include "target.asm"
+.include "regs.asm"
 
 KW_NEW	= 0xb1			; NEW token used by all S-BASIC SHARP machines
 
