@@ -16,7 +16,7 @@ Benefits:
 
 Do not:
 
-- switch programs from within a running program
+- switch programs with the `CALL` command from within a running program
 - use `TEXT`, unless you go back to `BASIC` before switching programs
 
 The following instructions use a cassette interface (CE-126P or CE-124).  If
