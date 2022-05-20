@@ -26,6 +26,21 @@ Y_REG = 0x18			; Yreg 0x18-0x1F
 Z_REG = 0x20			; Zreg 0x20-0x27
 W_REG = 0x28			; Wreg 0x28-0x2F
 
+; BASIC
+
+ERN = 0x34			; error number
+STATE = 0x35			; BASIC state 1=BREAK, 2, 4, 8, 16, 32, 64=(CUR_EXEC) is valid
+
+CUR_EXEC_L  = 0x38		; current program executed line address low order byte
+CUR_EXEC_H  = 0x39		; current program executed line address high order byte
+CUR_START_L = 0x3E		; current program executed start low order byte
+CUR_START_H = 0x3F		; current program executed start high order byte
+
+SEARCH_ADDR_L = 0x3A		; search address low order byte
+SEARCH_ADDR_H = 0x3B		; search address high order byte
+SEARCH_LINE_L = 0x3C		; search line number low order byte
+SEARCH_LINE_H = 0x3D		; search line number high order byte
+
 ; Ports
 
 PORT_A = 92			; port A

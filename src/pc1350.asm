@@ -191,6 +191,16 @@ BASIC_END_L   = 0x6f03                  ; pointer to basic end low byte
 BASIC_END_H   = 0x6f04                  ; pointer to basic end high byte
 BASIC_MERGE_L = 0x6f05                  ; pointer to basic merge low byte
 BASIC_MERGE_H = 0x6f06                  ; pointer to basic merge high byte
+BASIC_VARS_L  = 0x6f07                  ; pointer to basic variables low byte
+BASIC_VARS_H  = 0x6f08                  ; pointer to basic variables high byte
+
+; BASIC state flags
+
+BASIC_FLAGS   = 0x6f12                  ; 0x80 MERGE flag
+BASIC_EXEC_L  = 0x6f1c                  ; pointer to basic program being executed
+BASIC_EXEC_H  = 0x6f1d                  ; pointer to basic program being executed high byte
+BASIC_ADDR_L  = 0x6f20                  ; pointer to first byte of the next command
+BASIC_ADDR_H  = 0x6f21                  ; pointer to first byte of the next command high byte
 
 ; Memory location
 
@@ -311,6 +321,10 @@ RAM_BASIC_MERGE_L = RAM_START + 0x0B
 RAM_BASIC_MERGE_H = RAM_START + 0x0C
 RAM_BASIC         = RAM_START + 0x30
 
+; BASIC state
+
+RAM_BASIC_FLAGS = RAM_START + 0x18
+
 ; LCD properties
 
 LCD_ROWS       =  4
@@ -363,10 +377,12 @@ INT_ROM_ERROR       = 0x10E6  ; ERROR
 
 ; external ROM calls (I only know ROM1 addresses, please help ...)
 
+.ifdef  __ROM_VERS__
 .if  __ROM_VERS__
 
 EXT_ROM_TESTPRN = 0x8045  ; Test printer on
 EXT_ROM_PRINTA  = 0xA372  ; Print content of register A
 EXT_ROM_SCROLL  = 0xE23C  ; Scroll the display
 
+.endif
 .endif

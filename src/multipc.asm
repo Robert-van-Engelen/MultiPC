@@ -4,12 +4,12 @@
 ; Requires: AS61860 http://shop-pdp.net/ashtml/asxxxx.php
 ;
 ; PC-1350 with 16K RAM CARD:
-; CALL 8240,NEW	delete all programs (to initialize after loading)
-; CALL 8240	display the 10 programs slots
-; CALL 8240,0	switch to program #0
-; CALL 8240,1	switch to program #1
-; .... ......	...
-; CALL 8240,9	switch to program #9
+;   CALL 8240,NEW	delete all programs (to initialize after loading)
+;   CALL 8240		display the 10 programs slots
+;   CALL 8240,0		switch to program #0
+;   CALL 8240,1		switch to program #1
+;   .... ......		...... .. ....... ..
+;   CALL 8240,9		switch to program #9
 ;
 ; Each of the 10 programs can be edited, CLOADed, MERGEd or CHAINed.
 ; Switching between programs does not clear any variables.
@@ -212,8 +212,10 @@ sw_at_marker:
 	LP REG_A
 	EXBD			; (RAM_BASIC_MERGE) <-> BA
 
-;	reset the location that the cursor shows in PRO mode:
+;	clear state and reset the location that the cursor shows in PRO mode:
 
+	LP STATE
+	ANIM 0			; (STATE) <- 0 so that cursor up won't hang on non-existing line
 	JP 0x1530		; (0x6f1c) <- (BASIC_MERGE)
 
 ; ------------------------------------------------------------------------------
