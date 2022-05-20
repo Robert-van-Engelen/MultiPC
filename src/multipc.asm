@@ -51,23 +51,23 @@ switcher::
 sw_switch:
 	LIDP sw_active
 	LP REG_B
-	MVMD			; B <- (sw_active)
+	MVMD			; B <- [sw_active]
 	CPMA
-	JRZP sw_return		; if A == (sw_active) then return
+	JRZP sw_return		; if A == [sw_active] then return
 
 ;	update current active program size in the table, which may have become
 ;	stale when the program was edited or otherwise was changed;
-;	the actual program size is (BASIC_END) - (BASIC_START)
+;	the actual program size is [BASIC_END] - [BASIC_START]
 
 	PUSH			; save program activation A
 	LP REG_A
 	LIDP BASIC_START_L
-	MVBD			; BA <- (BASIC_START)
+	MVBD			; BA <- [BASIC_START]
 	LP REG_Y
 	LIDP BASIC_END_L
-	MVBD			; Y <- (BASIC_END)
+	MVBD			; Y <- [BASIC_END]
 	LP REG_Y
-	SBB			; Y <- (BASIC_END) - (BASIC_START)
+	SBB			; Y <- [BASIC_END] - [BASIC_START]
 	LIDP sw_active
 	LDD			; A <- current active program
 	CALL sw_table_cell	; X <- sw_table-1 + 4*A
@@ -75,7 +75,7 @@ sw_switch:
 	IX
 	IX
 	LP REG_Y
-	EXBD			; (sw_table+2 + 4*A) <-> (BASIC_END) - (BASIC_START)
+	EXBD			; (sw_table+2 + 4*A) <-> [BASIC_END] - [BASIC_START]
 	POP			; restore program activation A
 
 ;	rotate program A to the top; this rotates all programs located in
@@ -91,9 +91,9 @@ sw_switch:
 	ADB			; Y <- Y + BA = end of activated program A
 	LP REG_X
 	LIDP BASIC_END_L
-	MVBD			; X <- (BASIC_END)
+	MVBD			; X <- [BASIC_END]
 	LP REG_X
-	SBB			; X <- (BASIC_END) - start of activated program A
+	SBB			; X <- [BASIC_END] - start of activated program A
 	LP REG_A
 	LIQ REG_X
 	EXB			; BA <-> X
@@ -121,9 +121,9 @@ sw_switch:
 	MVB			;   BA <- X
 	LP REG_T
 	SBB			;   TU <- TU - BA
-	JRCP 2$			;   if (Y) >= X then
+	JRCP 2$			;   if [Y] >= X then
 	DECP
-	ADB			;     restore TU = (Y)
+	ADB			;     restore TU = [Y]
 	LP REG_A
 	LIQ REG_M
 	MVB			;     BA <- NM
@@ -132,29 +132,29 @@ sw_switch:
 	DY
 	IY
 	LP REG_T
-	EXBD			;     (Y) <-> TU
+	EXBD			;     [Y] <-> TU
 2$:	IY
 	IY
 	IY			;   Y <- next table cell
 	LOOP 1$			; loop
 
-;	update activated program start to (BASIC_END) - size of program A,
+;	update activated program start to [BASIC_END] - size of program A,
 ;	since the activated program is moved to the top
 
 	LP REG_Y
 	LIDP BASIC_END_L
-	MVBD			; Y <- (BASIC_END)
+	MVBD			; Y <- [BASIC_END]
 	LP REG_A
 	LIQ REG_M
 	MVB			; BA <- NM = size of activated program A
 	LP REG_Y
-	SBB			; Y <- (BASIC_END) - size of activated program A = new start of activated program A
+	SBB			; Y <- [BASIC_END] - size of activated program A = new start of activated program A
 	LIDP sw_active
 	LDD
 	CALL sw_table_cell	; X <- sw_table-1 + 4*A
 	IX
 	LP REG_Y
-	EXBD			; (sw_table + 4*(sw_active)) <-> Y
+	EXBD			; (sw_table + 4*[sw_active]) <-> Y
 	; FALL THROUGH
 
 ; ------------------------------------------------------------------------------
@@ -169,13 +169,13 @@ sw_set_basic:
 	MVB			; X <- BA = start of program A
 	LIDP BASIC_START_L
 	LP REG_A
-	EXBD			; (BASIC_START) <-> BA
+	EXBD			; [BASIC_START] <-> BA
 	LP REG_A
 	LIQ REG_X
 	MVB			; BA <- X = start of program A
 	LIDP RAM_BASIC_START_L
 	LP REG_A
-	EXBD			; (RAM_BASIC_START) <-> BA
+	EXBD			; [RAM_BASIC_START] <-> BA
 
 sw_next_prog1:			; repeat
 	LP REG_Y
@@ -196,27 +196,34 @@ sw_next_prog2:			;   repeat
 sw_at_marker:
 	LP REG_A
 	LIDP BASIC_END_L
-	MVBD			;   BA <- (BASIC_END)
+	MVBD			;   BA <- [BASIC_END]
 	;LP REG_X		;   assert P == REG_X
 	SBB
 	DECP
-	ADB			;   compare X - (BASIC_END)
-	JRCM sw_next_prog1	; loop until X >= (BASIC_END)
+	ADB			;   compare X - [BASIC_END]
+	JRNCP sw_set_merge	;   break if X >= [BASIC_END]
+	LIDP BASIC_FLAGS	;   set [BASIC_FLAGS] MERGE flag
+	ORID 0x80
+	LIDP RAM_BASIC_FLAGS	;   set [RAM_BASIC_FLAGS] MERGE flag
+	ORID 0x80
+	JRM sw_next_prog1	; loop
+
+sw_set_merge:
 	LP REG_A
 	LIQ REG_Y
 	MVB			; BA <- Y
 	LIDP BASIC_MERGE_L
 	LP REG_Y
-	EXBD			; (BASIC_MERGE) <-> Y
+	EXBD			; [BASIC_MERGE] <-> Y
 	LIDP RAM_BASIC_MERGE_L
 	LP REG_A
-	EXBD			; (RAM_BASIC_MERGE) <-> BA
+	EXBD			; [RAM_BASIC_MERGE] <-> BA
 
 ;	clear state and reset the location that the cursor shows in PRO mode:
 
 	LP STATE
 	ANIM 0			; (STATE) <- 0 so that cursor up won't hang on non-existing line
-	JP 0x1530		; (0x6f1c) <- (BASIC_MERGE)
+	JP 0x1530		; [0x6f1c] <- [BASIC_MERGE]
 
 ; ------------------------------------------------------------------------------
 ; error
@@ -227,7 +234,7 @@ sw_error_9:
 
 sw_error:
 	LP 0x34
-	EXAM			; (0x34) <- error code A
+	EXAM			; [0x34] <- error code A
 	POP
 	POP			; POP jump table return address
 	POP
@@ -287,7 +294,7 @@ sw_table_cell:
 ;	LIAB sw_end
 ;	LIDP BASIC_END_L
 ;	LP REG_A
-;	EXBD			; (BASIC_END) <- sw_end
+;	EXBD			; [BASIC_END] <- sw_end
 ;	JRM sw_set_basic
 
 sw_new:
@@ -307,7 +314,7 @@ sw_new:
 	MVB			; UT <- X
 	LIDP BASIC_END_L
 	LP REG_T
-	EXBD			; (BASIC_END) <- UT = program #0 end
+	EXBD			; [BASIC_END] <- UT = program #0 end
 	LIA 10-1
 	PUSH			; repeat 10 times
 1$:	DX
@@ -325,8 +332,8 @@ sw_new:
 	LOOP 1$			; loop
 	LIDP sw_active
 	;RA			; assert A == 0
-	STD			; (sw_active) <- 0
-	CALL sw_set_basic	; set (BASIC_START) and (BASIC_MERGE) to program #0
+	STD			; [sw_active] <- 0
+	CALL sw_set_basic	; set [BASIC_START] and [BASIC_MERGE] to program #0
 	; FALL THROUGH		; display program slots
 
 ; ------------------------------------------------------------------------------
@@ -351,7 +358,7 @@ sw_disp_loop:			; repeat
 	LIDP sw_active
 	LDD
 	CPMA
-	JRNZP 1$		;   if B == (sw_active) then
+	JRNZP 1$		;   if B == [sw_active] then
 	LIA '*			;     A <- '*'
 	IX
 	IX			;     X <- X + 2
@@ -361,7 +368,7 @@ sw_disp_loop:			; repeat
 	CPIA 1
 	JRNZP 2$
 	TSID 0xff
-	JRNZP 2$ 		;     if (X) == 0x0001 then
+	JRNZP 2$ 		;     if [X] == 0x0001 then
 	LDM
 	ADIA '0			;       A <- B + '0'
 	JRP 3$			;     else
@@ -372,7 +379,7 @@ sw_disp_loop:			; repeat
 	JRCM sw_disp_loop	; until ++B >= 10
 	LIDP MEM_CMD_CSR_ROW
 	RA
-	STD			; (MEM_CMD_CSR_ROW) <- 0
+	STD			; [MEM_CMD_CSR_ROW] <- 0
 	JP INT_ROM_DISP		; display screen buffer and return
 
 ; ------------------------------------------------------------------------------
@@ -459,9 +466,9 @@ blk_reverse_loop:		; repeat
 	DY
 	MVMD			;   L <- (--Y)
 	IXL			;   A <- (++X)
-	MVDM			;   (X) <- L
+	MVDM			;   [X] <- L
 	IY
-	DYS			;   (Y) <- A
+	DYS			;   [Y] <- A
 	DECK
 	JRNCM blk_reverse_loop	; loop until --K == 0xff
 	DECB
@@ -472,8 +479,8 @@ blk_reverse_exit:
 
 ; ------------------------------------------------------------------------------
 ; data section
-; active program (sw_active) byte value 0 to 9
-; table pointer (sw_table_ptr)+1 points to sw_table
+; active program [sw_active] byte value 0 to 9
+; table pointer [sw_table_ptr]+1 points to sw_table
 ; sw_table[10] of pairs of program start address and program size words
 ; start address points to 0xff, start address + size points to 0xff
 ; active program is the last so that it can be edited in BASIC
