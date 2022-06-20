@@ -79,24 +79,25 @@ int ihx2bas(const char *ihxfile, FILE *ihx, FILE *bas) {
   int address = 0;
   int length  = 0;
   int chksum  = 0;
-  int byte;
-  fprintf(bas, "%d CLEAR:V=1\n", baslinenum);
-  baslinenum += baslineinc;
-  fprintf(bas, "%d \"P\" REM ** %s **\n", baslinenum, ihxfile != NULL ? ihxfile : "ihx data");
-  baslinenum += baslineinc;
+  int byte    = 0;
   byte = getbyte(ihx);
-  if (byte != EOF && byte != ERR)
+  if (byte == ERR)
+    return 1;
+  if (byte != EOF)
     address = ihxaddress - 1;
+  fprintf(bas, "%d CLEAR:V=1:REM %s\n", baslinenum, ihxfile != NULL ? ihxfile : "ihx");
+  baslinenum += baslineinc;
+  fprintf(bas, "%d \"P\" A=%d\n", baslinenum, address);
+  baslinenum += baslineinc;
   while (byte != EOF && byte != ERR) {
     if (columns == 0) {
-      fprintf(bas, "%d POKE %d,", baslinenum, ihxaddress-1);
+      fprintf(bas, "%d POKE A", baslinenum);
+      if (ihxaddress > address + 1)
+        fprintf(bas, "+%d", ihxaddress - address - 1);
       baslinenum += baslineinc;
     }
-    else {
-      fprintf(bas, ",");
-    }
+    fprintf(bas, ",%d", byte);
     chksum += byte;
-    fprintf(bas, "%d", byte);
     ++columns;
     if (columns >= 16) {
       fprintf(bas, "\n");
@@ -109,9 +110,7 @@ int ihx2bas(const char *ihxfile, FILE *ihx, FILE *bas) {
   if (byte == ERR)
     return 1;
   length = ihxaddress - address;
-  fprintf(bas, "%d A=%d:B=%d:C=%d\n", baslinenum, address, length, chksum);
-  baslinenum += baslineinc;
-  fprintf(bas, "%d IF V FOR I=A TO A+B-1:C=C-PEEK I:NEXT I:IF C<>0 PRINT \"CRC ERR\":END\n", baslinenum);
+  fprintf(bas, "%d IF V LET C=0:FOR I=0 TO %d:C=C+PEEK(A+I):NEXT I:IF C<>%d PRINT \"ERR\":END\n", baslinenum, length - 1, chksum);
   baslinenum += baslineinc;
   return 0;
 }
